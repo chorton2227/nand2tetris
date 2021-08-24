@@ -23,7 +23,7 @@ Outputs 1 asm file.
 
 ## Compiler
 
-Compiles the high level jack language into the vm lnaguage.
+Compiles the high level jack language into the vm language.
 
 ## TODOs
 
