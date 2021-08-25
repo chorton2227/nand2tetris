@@ -64,16 +64,19 @@ class CodeWriter:
         self._f.close()
 
     def writeLabel(self, label):
-        self._lCommand(label)
+        classLabel = self._classLabel(label)
+        self._lCommand(classLabel)
 
     def writeGoto(self, label):
-        self._aCommand(label)
+        classLabel = self._classLabel(label)
+        self._aCommand(classLabel)
         self._cCommand(None, '0', 'JMP')
 
     def writeIf(self, label):
+        classLabel = self._classLabel(label)
         self._spDec()
         self._spRead('D')
-        self._aCommand(label)
+        self._aCommand(classLabel)
         self._cCommand(None, 'D', 'JNE')
 
     def writeCall(self, functionName, numArgs):
@@ -221,6 +224,9 @@ class CodeWriter:
 
     # Labels and jumps
 
+    def _classLabel(self, label):
+        return self._currentClassName + '.' + label
+
     def _newLabel(self):
         label = "LABEL" + str(self._labelCount)
         self._labelCount += 1
@@ -296,7 +302,7 @@ class CodeWriter:
     # Memory access operations
 
     def _staticSymbol(self, idx):
-        return self._currentClassName + '.' + str(idx)
+        return self._classLabel(str(idx))
 
     def _setReg(self, reg, comp='D'):
         self._aCommand(reg)
