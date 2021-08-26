@@ -1,0 +1,253 @@
+class Tetromino {
+	field int _topLeftRow;
+	field int _potentialTopLeftRow;
+	field int _topLeftCol;
+	field int _potentialTopLeftCol;
+	field int _colOffset;
+	field char _char0;
+	field char _char1;
+	field char _rowDelimiter;
+	field String _shape;
+	field String _potentialShape;
+	field int _shapeIndex;
+	field Array _potentialShapes;
+	
+	constructor Tetromino new(int t, int topLeftRow, int topLeftCol) {
+		let _topLeftRow = topLeftRow;
+		let _potentialTopLeftRow = topLeftRow+1;
+		let _topLeftCol = topLeftCol;
+		let _potentialTopLeftCol = topLeftCol;
+		let _char0 = 48;
+		let _char1 = 49;
+		let _rowDelimiter = 44; // Comma
+		let _shapeIndex = 0;
+		do setupShape(t);
+		do draw();
+		return this;
+	}
+	
+	method void dispose() {
+		do _potentialShapes.dispose();
+		do Memory.deAlloc(this);
+		return;
+	}
+	
+	method void setupShape(int t) {
+		if (t = 0) { do setupOrangeRicky(); }
+		if (t = 1) { do setupBlueRicky(); }
+		if (t = 2) { do setupClevelandZ(); }
+		if (t = 3) { do setupRhodeIslandZ(); }
+		if (t = 4) { do setupHero(); }
+		if (t = 5) { do setupTeewee(); }
+		if (t = 6) { do setupSmashboy(); }
+		return;
+	}
+	
+	method void setupOrangeRicky() {
+		let _shape = "001,111";
+		let _potentialShape = _shape;
+		let _potentialShapes = Array.new(4);
+		let _potentialShapes[0] = "001,111";
+		let _potentialShapes[1] = "10,10,11";
+		let _potentialShapes[2] = "111,100";
+		let _potentialShapes[3] = "11,01,01";
+		return;
+	}
+	
+	method void setupBlueRicky() {
+		let _shape = "100,111";
+		let _potentialShape = _shape;
+		let _potentialShapes = Array.new(4);
+		let _potentialShapes[0] = "100,111";
+		let _potentialShapes[1] = "11,10,10";
+		let _potentialShapes[2] = "111,001";
+		let _potentialShapes[3] = "01,01,11";
+		return;
+	}
+	
+	method void setupClevelandZ() {
+		let _shape = "110,011";
+		let _potentialShape = _shape;
+		let _potentialShapes = Array.new(4);
+		let _potentialShapes[0] = "110,011";
+		let _potentialShapes[1] = "01,11,10";
+		let _potentialShapes[2] = "110,011";
+		let _potentialShapes[3] = "01,11,10";
+		return;
+	}
+	
+	method void setupRhodeIslandZ() {
+		let _shape = "011,110";
+		let _potentialShape = _shape;
+		let _potentialShapes = Array.new(4);
+		let _potentialShapes[0] = "011,110";
+		let _potentialShapes[1] = "10,11,01";
+		let _potentialShapes[2] = "011,110";
+		let _potentialShapes[3] = "10,11,01";
+		return;
+	}
+	
+	method void setupHero() {
+		let _shape = "1111";
+		let _potentialShape = _shape;
+		let _potentialShapes = Array.new(4);
+		let _potentialShapes[0] = "1111";
+		let _potentialShapes[1] = "1,1,1,1";
+		let _potentialShapes[2] = "1111";
+		let _potentialShapes[3] = "1,1,1,1";
+		return;
+	}
+	
+	method void setupTeewee() {
+		let _shape = "010,111";
+		let _potentialShape = _shape;
+		let _potentialShapes = Array.new(4);
+		let _potentialShapes[0] = "010,111";
+		let _potentialShapes[1] = "10,11,10";
+		let _potentialShapes[2] = "111,010";
+		let _potentialShapes[3] = "01,11,01";
+		return;
+	}
+	
+	method void setupSmashboy() {
+		let _shape = "11,11";
+		let _potentialShape = _shape;
+		let _potentialShapes = Array.new(4);
+		let _potentialShapes[0] = "11,11";
+		let _potentialShapes[1] = "11,11";
+		let _potentialShapes[2] = "11,11";
+		let _potentialShapes[3] = "11,11";
+		return;
+	}
+	
+	method String shape() {
+		return _shape;
+	}
+	
+	method String topLeftRow() {
+		return _topLeftRow;
+	}
+	
+	method String topLeftCol() {
+		return _topLeftCol;
+	}
+	
+	method String potentialTopLeftRow() {
+		return _potentialTopLeftRow;
+	}
+	
+	method String potentialTopLeftCol() {
+		return _potentialTopLeftCol;
+	}
+
+    method void draw() {
+		var int i, row, col;
+		var char c;
+		
+		let i = 0;
+		let row = _topLeftRow;
+		let col = _topLeftCol;
+		
+		while (i < String.length(_shape)) {
+			let c = _shape.charAt(i);
+			if (c = _rowDelimiter) {
+				let row = row + 1;
+				let col = _topLeftCol;
+				let i = i + 1;
+				let c = _shape.charAt(i);
+			}
+			
+			if (c = _char1) {
+				do ScreenGrid.drawBlock(row, col + 11);
+			}
+			
+			let i = i + 1;
+			let col = col + 1;
+		}
+		
+		return;
+    }
+
+    method void erase() {
+		var int i, row, col;
+		var char c;
+		
+		let i = 0;
+		let row = _topLeftRow;
+		let col = _topLeftCol;
+		
+		while (i < String.length(_shape)) {
+			let c = _shape.charAt(i);
+			if (c = _rowDelimiter) {
+				let row = row + 1;
+				let col = _topLeftCol;
+				let i = i + 1;
+				let c = _shape.charAt(i);
+			}
+			
+			do ScreenGrid.drawSquare(row, col + 11, 0);
+			
+			let i = i + 1;
+			let col = col + 1;
+		}
+		
+		return;
+    }
+	
+	method int shapeWidth() {
+		var int w;
+		var char c;
+		while (true) {
+			let c = _shape[w];
+			if (c = _rowDelimiter) {
+				return w;
+			}
+			let w = w + 1;
+		}
+		return 0;
+	}
+	
+	method void move() {
+		do erase();
+		let _topLeftRow = _potentialTopLeftRow;
+		let _potentialTopLeftRow = _topLeftRow + 1;
+		let _topLeftCol = _potentialTopLeftCol;
+		let _shape = _potentialShape;
+		do draw();
+		return;
+	}
+	
+	method void goLeft() {
+		if (_potentialTopLeftCol > 0) {
+			let _potentialTopLeftCol = _potentialTopLeftCol - 1;
+		}
+		return;
+	}
+	
+	method void goRight() {
+		var int shapeWidth;
+		let shapeWidth = shapeWidth();
+		if (_potentialTopLeftCol + shapeWidth < 12) {
+			let _potentialTopLeftCol = _potentialTopLeftCol + 1;
+		}
+		return;
+	}
+	
+	method void rotateClockwise() {
+		let _shapeIndex = _shapeIndex + 1;
+		if (_shapeIndex > 3) {
+			let _shapeIndex = 0;
+		}
+		let _potentialShape = _potentialShapes[_shapeIndex];
+		return;
+	}
+	
+	method void rotateCounterwise() {
+		let _shapeIndex = _shapeIndex - 1;
+		if (_shapeIndex < 0) {
+			let _shapeIndex = 3;
+		}
+		let _potentialShape = _potentialShapes[_shapeIndex];
+		return;
+	}
+}

@@ -1,0 +1,325 @@
+class Tetris {
+	field int _score, _seed, _lastT;
+	field char _char0;
+	field char _char1;
+	field char _rowDelimiter;
+	field boolean _gameOver;
+	field Array _landed;
+	field Tetromino _tetromino;
+	
+	constructor Tetris new() {
+		let _seed = 53;
+		let _char0 = 48;
+		let _char1 = 49;
+		let _rowDelimiter = 44; // Comma
+		do Background.draw();
+		do reset();
+		return this;
+	}
+	
+	method void dispose() {
+		do _landed.dispose();
+		do _tetromino.dispose();
+		do Memory.deAlloc(this);
+		return;
+	}
+	
+	method void reset() {
+		let _score = 0;
+		let _gameOver = false;
+		let _landed = Array.new(16); // 10 x 16 grid
+		let _landed[0] = "0000000000";
+		let _landed[1] = "0000000000";
+		let _landed[2] = "0000000000";
+		let _landed[3] = "0000000000";
+		let _landed[4] = "0000000000";
+		let _landed[5] = "0000000000";
+		let _landed[6] = "0000000000";
+		let _landed[7] = "0000000000";
+		let _landed[8] = "0000000000";
+		let _landed[9] = "0000000000";
+		let _landed[10] = "0000000000";
+		let _landed[11] = "0000000000";
+		let _landed[12] = "0000000000";
+		let _landed[13] = "0000000000";
+		let _landed[14] = "0000000000";
+		let _landed[15] = "0000000000";
+		do draw();
+		do newTetromino(false);
+		return;
+	}
+	
+	method void run() {
+		var char key;
+		var boolean exit;
+		let exit = false;
+		
+		while (~exit) {
+			let key = Keyboard.keyPressed();
+			
+			// Q = Quit game
+			if (key = 81) {
+				let exit = true;
+			}
+			
+			// R = Restart game
+			if (key = 82) {
+				do reset();
+			}
+			
+			// X = Rotate tetromino clockwise
+			if (key = 88) {
+				do _tetromino.rotateClockwise();
+				if (collisionDetection()) {
+					do _tetromino.rotateCounterwise();
+				}
+			}
+			
+			// Z = Rotate tetromino counter clockwise
+			if (key = 90) {
+				do _tetromino.rotateCounterwise();
+				if (collisionDetection()) {
+					do _tetromino.rotateClockwise();
+				}
+			}
+			
+			// Left arrow = Move tetromino left
+			if (key = 130) {
+				do _tetromino.goLeft();
+				if (collisionDetection()) {
+					do _tetromino.goRight();
+				}
+			}
+			
+			// Right arrow = Move tetromino right
+			if (key = 132) {
+				do _tetromino.goRight();
+				if (collisionDetection()) {
+					do _tetromino.goLeft();
+				}
+			}
+			
+			// Space = Land tetromino
+			if (key = 32) {
+				while (~(collisionDetection())) {
+					do _tetromino.move();
+				}
+			}
+			
+			do advance();
+		}
+		
+		return;
+	}
+	
+	method void gameOver() {
+		let _gameOver = true;
+		do Output.moveCursor(11, 27);
+		do Output.printString("Game Over!");
+		return;
+	}
+	
+	method void advance() {
+		// Halt when game is over
+		if (_gameOver) {
+			return;
+		}
+	
+		//  Add delay for human players
+		do Sys.wait(500);
+		
+		// Has the falling tetromino landed?
+		if (collisionDetection()) {
+			do updateLanded();
+			do clearLines();
+			do draw();
+			do newTetromino(true);
+			if (collisionDetection()) {
+				do gameOver();
+			}
+			return;
+		}
+		
+		// Otherwise, move the tetromino down the grid
+		do _tetromino.move();
+		return;
+	}
+	
+	method boolean collisionDetection() {
+		var int i, j, row, col;
+		var char s, l;
+		var String shape, landed;
+		
+		let shape = _tetromino.shape();
+		let i = 0;
+		let row = _tetromino.potentialTopLeftRow();
+		let col = _tetromino.potentialTopLeftCol();
+		
+		while (i < String.length(shape)) {
+			let s = shape.charAt(i);
+			if (s = _rowDelimiter) {
+				let row = row + 1;
+				let col = _tetromino.potentialTopLeftCol();
+				let i = i + 1;
+				let s = shape.charAt(i);
+			}
+			
+			if (row > 15) { return true; }
+			if (col < 0) { return true; }
+			if (col > 9) { return true; }
+			
+			let landed = _landed[row];
+			let l = landed.charAt(col);
+			if (s = _char1) {
+				if (l = _char1) {
+					return true;
+				}
+			}
+			
+			let i = i + 1;
+			let col = col + 1;
+		}
+		
+		return false;
+	}
+	
+	method void updateLanded() {
+		var int i, row, col;
+		var char c;
+		var String shape, landed;
+		
+		let shape = _tetromino.shape();
+		let row = _tetromino.topLeftRow();
+		let col = _tetromino.topLeftCol();
+		let i = 0;
+		
+		while (i < String.length(shape)) {
+			let c = shape.charAt(i);
+			if (c = _rowDelimiter) {
+				let row = row + 1;
+				let col = _tetromino.topLeftCol();
+				let i = i + 1;
+				let c = shape.charAt(i);
+			}
+	
+			if (c = _char1) {
+				let landed = _landed[row];
+				do landed.setCharAt(col, c);
+				let _landed[row] = landed;
+			}
+			
+			let i = i + 1;
+			let col = col + 1;
+		}
+	
+		return;
+	}
+	
+	method void newTetromino(boolean dispose) {
+		var int i, t;
+		
+		if (dispose) {
+			do _tetromino.dispose();
+		}
+		
+		let _seed = _seed + 1;
+		let i = 3 * _seed * _seed + 2 * _seed;
+		while (i > 0) {
+			let i = i - 1;
+			let t = t + 1;
+			if (t > 6) {
+				let t = 0;
+			}
+		}
+		
+		if (t = _lastT) {
+			let t = t + 1;
+			if (t > 6) {
+				let t = 0;
+			}
+		}
+		
+		let _tetromino = Tetromino.new(t, 0, 4);
+		let _lastT = t;
+		return;
+	}
+	
+	method void clearLine(int line) {
+		var int i;
+		var String s;
+		
+		let i = line - 1;
+		
+		while (i > -1) {
+			let s = _landed[i];
+			let _landed[i+1] = s;
+			let i = i - 1;
+		}
+		
+		return;
+	}
+	
+	method void clearLines() {
+		var int i, j, multi;
+		var char c;
+		var String s;
+		var boolean clearLine, clearedLines;
+		
+		let i = 0;
+		let multi = 0;
+		
+		while (i < 16) {
+			let s = _landed[i];
+			let clearLine = true;
+			let j = 0;
+			while (j < String.length(s)) {
+				let c = s.charAt(j);
+				if (c = _char0) {
+					let clearLine = false;
+				}
+				let j = j + 1;
+			}
+			if (clearLine) {
+				do clearLine(i);
+				let multi = multi + 1;
+			}
+			let i = i + 1;
+		}
+		
+		if (multi > 0) {
+			let _score = _score + (multi * 100);
+		}
+		
+		return;
+	}
+	
+	method void draw() {
+		var int i, j;
+		var String s;
+		var char x;
+		
+		let i = 0;
+		
+		while (i < 16) {
+			let j = 0;
+			while (j < 10) {
+				let s = _landed[i];
+				let x = s.charAt(j);
+				if (x = _char0) {
+					do ScreenGrid.drawSquare(i, j + 11, 0);
+				}
+				if (x = _char1) {
+					do ScreenGrid.drawBlock(i, j + 11);
+				}
+				let j = j + 1;
+			}
+			let i = i + 1;
+		}
+		
+		do Output.moveCursor(0, 0);
+		do Output.printString("Score: ");
+		do Output.printInt(_score);
+		
+		return;
+	}
+}

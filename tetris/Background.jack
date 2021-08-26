@@ -1,0 +1,16 @@
+class Background {
+    function void draw() {
+		var int i, j;
+		let i = 0;
+		while (i < 11) {
+			let j = 0;
+			while (j < 16) {
+				do ScreenGrid.drawSquare(j, i, -1);
+				do ScreenGrid.drawSquare(j, 31 - i, -1);
+				let j = j + 1;
+			}
+			let i = i + 1;
+		}
+        return;
+    }
+}

@@ -1,0 +1,93 @@
+class ScreenGrid {
+	function void drawSquare(int row, int col, int color) {
+		var int i, x;
+		var int size, numRows, numCols;
+		var int addr;
+		
+		let size = 16;
+		let numRows = 16;
+		let numCols = 32;		
+		let addr = 16384;
+		
+		while (i < size) {
+			do Memory.poke(addr + (i * numCols) + (row * numCols * size) + col, color);
+			let i = i + 1;
+		}
+
+		return;
+	}
+	
+	function void drawBlock(int row, int col) {
+		var int i, x;
+		var int size, numRows, numCols;
+		var int addr;
+		var Array colors;
+		
+		let size = 16;
+		let numRows = 16;
+		let numCols = 32;		
+		let addr = 16384;
+		
+		let colors = Array.new(16);
+		let colors[0] = 0;
+		let colors[1] = 32766;
+		let colors[2] = 16386;
+		let colors[3] = 24570;
+		let colors[4] = 20490;
+		let colors[5] = 20490;
+		let colors[6] = 20490;
+		let colors[7] = 20490;
+		let colors[8] = 20490;
+		let colors[9] = 20490;
+		let colors[10] = 20490;
+		let colors[11] = 20490;
+		let colors[12] = 24570;
+		let colors[13] = 16386;
+		let colors[14] = 32766;
+		let colors[15] = 0;
+		
+		// style 2
+		let colors[0] = -1;
+		let colors[1] = -1;
+		let colors[2] = -16381;
+		let colors[3] = -8197;
+		let colors[4] = -12277;
+		let colors[5] = -10261;
+		let colors[6] = -11221;
+		let colors[7] = -10837;
+		let colors[8] = -10837;
+		let colors[9] = -11221;
+		let colors[10] = -10261;
+		let colors[11] = -12277;
+		let colors[12] = -8197;
+		let colors[13] = -16381;
+		let colors[14] = -1;
+		let colors[15] = -1;
+		
+		// style 3
+		let colors[0] = 0;
+		let colors[1] = 32766;
+		let colors[2] = 16386;
+		let colors[3] = 16386;
+		let colors[4] = 20466;
+		let colors[5] = 20466;
+		let colors[6] = 20466;
+		let colors[7] = 20466;
+		let colors[8] = 20466;
+		let colors[9] = 20466;
+		let colors[10] = 20466;
+		let colors[11] = 20466;
+		let colors[12] = 16386;
+		let colors[13] = 16386;
+		let colors[14] = 32766;
+		let colors[15] = 0;
+		
+		while (i < size) {
+			do Memory.poke(addr + (i * numCols) + (row * numCols * size) + col, colors[i]);
+			let i = i + 1;
+		}
+
+		do colors.dispose();
+		return;
+	}
+}

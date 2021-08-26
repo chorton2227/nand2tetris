@@ -1,3 +1,4 @@
 projects/*
 tools/*
 */__pycache__/*
+tetris/*.vm
