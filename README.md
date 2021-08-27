@@ -4,6 +4,8 @@ Contains projects from [nand2tetris](https://www.nand2tetris.org).
 
 ## Tetris Game
 
+![Tetris gameplay](images/tetris.gif)
+
 Simple tetris game using bitmap graphics.
 Each cleared lined is 100 points.
 Stacking tetrominos off screen ends the game.
