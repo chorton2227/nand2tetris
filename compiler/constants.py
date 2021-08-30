@@ -30,6 +30,23 @@ class Keyword(ExtendedEnum):
     NULL = 'null'
     THIS = 'this'
 
+class NonTerminal(ExtendedEnum):
+    CLASS = 'class'
+    CLASS_VAR_DEC = 'classVarDec'
+    SUBROUTINE_DEC = 'subroutineDec'
+    PARAMETER_LIST = 'parameterList'
+    SUBROUTINE_BODY = 'subroutineBody'
+    VAR_DEC = 'varDec'
+    STATEMENTS = 'statements'
+    WHILE_STATEMENT = 'whileStatement'
+    IF_STATEMENT = 'ifStatement'
+    RETURN_STATEMENT = 'returnStatement'
+    LET_STATEMENT = 'letStatement'
+    DO_STATEMENT = 'doStatement'
+    EXPRESSION = 'expression'
+    TERM = 'term'
+    EXPRESSION_LIST = 'expressionList'
+
 class Symbol(ExtendedEnum):
     OPEN_BRACE = '{'
     CLOSE_BRACE = '}'

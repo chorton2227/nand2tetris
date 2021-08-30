@@ -2,7 +2,6 @@
 
 import re
 from constants import *
-from xml.sax.saxutils import escape
 
 class Tokenizer:
     def __init__(self, infile):
@@ -60,7 +59,7 @@ class Tokenizer:
             self._keyword = token
         elif self._isSymbol(token):
             self._tokenType = TokenType.SYMBOL
-            self._symbol = escape(token)
+            self._symbol = token
         elif self._isIntConst(token):
             self._tokenType = TokenType.INT_CONST
             self._intVal = token
@@ -74,6 +73,9 @@ class Tokenizer:
             print("Unrecognized token:", token)
 
         self._cursor += 1
+
+    def back(self):
+        self._cursor -= 1
 
     def tokenType(self):
         return self._tokenType
