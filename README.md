@@ -51,7 +51,7 @@ The analyzer tokenizes and parses jack files.
 Generates xml files for tokens and parsed structure to an out folder.
 
 ```
-./analyzer.py <jack file|jack direction>
+./analyzer.py <jack file|jack directory>
 ```
 
 ## TODOs
