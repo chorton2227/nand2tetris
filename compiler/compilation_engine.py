@@ -351,29 +351,3 @@ class CompilationEngine:
 
     def _isExpression(self):
         return self._isTerm()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
