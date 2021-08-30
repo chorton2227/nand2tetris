@@ -45,6 +45,15 @@ Outputs 1 asm file.
 
 Compiles the high level jack language into the vm language.
 
+### Analyzer
+
+The analyzer tokenizes and parses jack files.
+Generates xml files for tokens and parsed structure to an out folder.
+
+```
+./analyzer.py <jack file|jack direction>
+```
+
 ## TODOs
 
 * Build compiler
