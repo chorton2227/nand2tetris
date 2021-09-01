@@ -15,7 +15,6 @@ class Analyzer:
             tokenOut = self._outfile(infile, 'T')
             compileOut = self._outfile(infile)
             self._generateTokens(infile, tokenOut)
-            self._compile(infile, compileOut)
 
     def _outfile(self, infile, s=''):
         dirname = os.path.dirname(infile)
@@ -47,10 +46,6 @@ class Analyzer:
 
         out.write("</tokens>\n")
         out.close()
-
-    def _compile(self, infile, outfile):
-        compilationEngine = CompilationEngine(infile, outfile)
-        compilationEngine.compile()
 
 def printUsage():
     print("Usage: ./analyzer.py <dir|file>")
