@@ -22,6 +22,17 @@ Needs better control response atm.
 * R Key = Restart tetris game
 * Q Key = Quit tetris game
 
+### Build and Emulate
+
+Tetris can be built with the command:
+
+```
+./build.sh
+```
+
+The tetris game can be emulated with the VMEmulator provided under tools.
+After build, load all vm files in tetris/out/ into the VMEmulator, set to No Animation and Screen, and hit the Run button.
+
 ## Assembler
 
 Converts an assembly language into instruction sets for the cpu.
