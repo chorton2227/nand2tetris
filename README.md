@@ -71,3 +71,7 @@ Assembler takes as input 1 asm file and outputs 1 hack file with the same name.
 ```
 ./assembler.py <asm file>
 ```
+
+## Chipsets
+
+The chipsets folder contains all chips built for the first 5 chapters written in a Hardware Defintion Language(HDL).
