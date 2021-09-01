@@ -284,7 +284,6 @@ class CompilationEngine:
             _, t = self._advance()
             identifier = self._identifierTable.getIdentifier(t)
             if identifier is not None and not self._isToken(TokenType.SYMBOL, Symbol.DOT):
-                print(t, identifier.getType(), identifier.getKind().value)
                 segment = self._kindToSegment(identifier.getKind())
                 index = identifier.getIndex()
 

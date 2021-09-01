@@ -10,15 +10,15 @@ class Tokenizer:
 
         self._reComments = re.compile(r'//[^\n]*\n|/\*(.*?)\*/', re.MULTILINE|re.DOTALL)
         self._reWhitespace = re.compile(r'\s+')
-        self._reKeywords = re.compile('|'.join(self._keywords))
+        self._reKeywords = re.compile('|'.join([k for k in self._keywords]))
         self._reSymbols = re.compile('|'.join([re.escape(s) for s in self._symbols]))
         self._reIdentifier = re.compile("\w+")
         self._reIntConst = re.compile("\d+")
         self._reStringConst = re.compile(r'"[^"\n]*"')
         self._reTokens = re.compile('|'.join([
+            self._reIdentifier.pattern,
             self._reKeywords.pattern,
             self._reSymbols.pattern,
-            self._reIdentifier.pattern,
             self._reIntConst.pattern,
             self._reStringConst.pattern]))
 
@@ -56,7 +56,7 @@ class Tokenizer:
 
         if self._isKeyword(token):
             self._tokenType = TokenType.KEYWORD
-            self._keyword = token
+            self._keyword = token.strip()
         elif self._isSymbol(token):
             self._tokenType = TokenType.SYMBOL
             self._symbol = token
@@ -98,7 +98,7 @@ class Tokenizer:
     # Conditional methods
 
     def _isKeyword(self, token):
-        return self._reKeywords.match(token)
+        return token in Keyword.list()
 
     def _isSymbol(self, token):
         return self._reSymbols.match(token)
