@@ -33,25 +33,6 @@ Tetris can be built with the command:
 The tetris game can be emulated with the VMEmulator provided under tools.
 After build, load all vm files in tetris/out/ into the VMEmulator, set to No Animation and Screen, and hit the Run button.
 
-## Assembler
-
-Converts an assembly language into instruction sets for the cpu.
-Assembler takes as input 1 asm file and outputs 1 hack file with the same name.
-
-```
-./assembler.py <asm file>
-```
-
-## VM Translator
-
-Translates the intermediate vm language into assembly.
-VM translator takes as input either 1 vm file or a directory containing multiple vm files.
-Outputs 1 asm file.
-
-```
-./vm_translator.py <vm file|vm directory>
-```
-
 ## Compiler
 
 Compiles the high level jack language into the vm language.
@@ -70,4 +51,23 @@ Out filename is "out/[Name]T.xml" where [Name] is the original filename.
 
 ```
 ./analyzer.py <jack file|jack directory>
+```
+
+## VM Translator
+
+Translates the intermediate vm language into assembly.
+VM translator takes as input either 1 vm file or a directory containing multiple vm files.
+Outputs 1 asm file.
+
+```
+./vm_translator.py <vm file|vm directory>
+```
+
+## Assembler
+
+Converts an assembly language into instruction sets for the cpu.
+Assembler takes as input 1 asm file and outputs 1 hack file with the same name.
+
+```
+./assembler.py <asm file>
 ```
