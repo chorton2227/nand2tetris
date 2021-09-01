@@ -71,7 +71,3 @@ Out filename is "out/[Name]T.xml" where [Name] is the original filename.
 ```
 ./analyzer.py <jack file|jack directory>
 ```
-
-## TODOs
-
-* .sh files for building tetris (compiler -> vm translator -> assembler -> cpu instruction set)
