@@ -225,9 +225,9 @@ class Tetromino {
 	}
 	
 	method void goRight() {
-		var int shapeWidth;
-		let shapeWidth = shapeWidth();
-		if (_potentialTopLeftCol + shapeWidth < 12) {
+		var int w;
+		let w = shapeWidth();
+		if (_potentialTopLeftCol + w < 12) {
 			let _potentialTopLeftCol = _potentialTopLeftCol + 1;
 		}
 		return;

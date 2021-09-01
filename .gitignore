@@ -2,3 +2,7 @@ projects/*
 tools/*
 */__pycache__/*
 tetris/*.vm
+tetris/out/*.vm
+tetris/out/*.xml
+tetris/out/*.asm
+tetris/out/*.hack

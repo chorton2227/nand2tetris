@@ -324,6 +324,7 @@ class CompilationEngine:
         nArgs = 0
 
         # Swap identifier with type
+        sub1 = subroutine
         identifier = self._identifierTable.getIdentifier(subroutine)
         if identifier is not None:
             segment = self._kindToSegment(identifier.getKind())

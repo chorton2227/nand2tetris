@@ -263,23 +263,23 @@ class Tetris {
 		var int i, j, multi;
 		var char c;
 		var String s;
-		var boolean clearLine, clearedLines;
+		var boolean clear;
 		
 		let i = 0;
 		let multi = 0;
 		
 		while (i < 16) {
 			let s = _landed[i];
-			let clearLine = true;
+			let clear = true;
 			let j = 0;
 			while (j < String.length(s)) {
 				let c = s.charAt(j);
 				if (c = _char0) {
-					let clearLine = false;
+					let clear = false;
 				}
 				let j = j + 1;
 			}
-			if (clearLine) {
+			if (clear) {
 				do clearLine(i);
 				let multi = multi + 1;
 			}
