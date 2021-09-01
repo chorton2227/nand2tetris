@@ -47,6 +47,16 @@ class NonTerminal(ExtendedEnum):
     TERM = 'term'
     EXPRESSION_LIST = 'expressionList'
 
+class Segment(ExtendedEnum):
+    CONST = 'constant'
+    ARG = 'argument'
+    LOCAL = 'local'
+    STATIC = 'static'
+    THIS = 'this'
+    THAT = 'that'
+    PTR = 'pointer'
+    TEMP = 'temp'
+
 class Symbol(ExtendedEnum):
     OPEN_BRACE = '{'
     CLOSE_BRACE = '}'
@@ -74,3 +84,20 @@ class TokenType(ExtendedEnum):
     IDENTIFIER = 'identifier'
     INT_CONST = 'integerConstant'
     STRING_CONST = 'stringConstant'
+
+class VariableKind(ExtendedEnum):
+    STATIC = 'static'
+    FIELD = 'field'
+    ARG = 'arg'
+    VAR = 'var'
+
+class VMOp(ExtendedEnum):
+    ADD = 'add'
+    SUB = 'sub'
+    NEG = 'neg'
+    EQ = 'eq'
+    GT = 'gt'
+    LT = 'lt'
+    AND = 'and'
+    OR = 'or'
+    NOT = 'not'
