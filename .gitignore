@@ -1,5 +1,6 @@
 projects/*
 tools/*.log
+tools/**/*.dat
 */__pycache__/*
 tetris/*.vm
 tetris/out/*.vm
