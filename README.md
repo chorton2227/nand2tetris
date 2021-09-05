@@ -53,6 +53,10 @@ Out filename is "out/[Name]T.xml" where [Name] is the original filename.
 ./analyzer.py <jack file|jack directory>
 ```
 
+### Operating System
+
+The operating system contains a basic library and an encapsulation of the underlying hardware interface.
+
 ## VM Translator
 
 Translates the intermediate vm language into assembly.

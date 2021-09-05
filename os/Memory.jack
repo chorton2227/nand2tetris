@@ -1,0 +1,100 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/Memory.jack
+
+/**
+ * This library provides two services: direct access to the computer's main
+ * memory (RAM), and allocation and recycling of memory blocks. The Hack RAM
+ * consists of 32,768 words, each holding a 16-bit binary number.
+ */ 
+class Memory {
+    static Array memory;
+    static Array freeList;
+
+    static int heapStart;
+    static int heapStop;
+    static int LENGTH;
+    static int NEXT;
+    static int BLOCK_LENGTH;
+
+    /** Initializes the class. */
+    function void init() {
+        let heapStart = 2048;
+        let heapStop = 16384;
+        let LENGTH = 0;
+        let NEXT = 1;
+        let BLOCK_LENGTH = -1;
+
+        let memory = 0;
+        let freeList = heapStart;
+        let freeList[LENGTH] = heapStop - heapStart;
+        let freeList[NEXT] = null;
+        return;
+    }
+
+    /** Returns the RAM value at the given address. */
+    function int peek(int address) {
+        return memory[address];
+    }
+
+    /** Sets the RAM value at the given address to the given value. */
+    function void poke(int address, int value) {
+        let memory[address] = value;
+        return;
+    }
+
+    /** Finds an available RAM block of the given size and returns
+     *  a reference to its base address. */
+    function int alloc(int size) {
+        var Array pointer, prevPointer, nextPointer, block;
+        var boolean foundBlock;
+
+        let prevPointer = null;
+        let nextPointer = null;
+        let foundBlock = false;
+
+        // First-fit
+        let pointer = freeList;
+        let nextPointer = pointer[NEXT];
+        if (pointer[LENGTH] > size) {
+            let foundBlock = true;
+        }
+        while (~(foundBlock)) {
+            let prevPointer = pointer;
+            let pointer = nextPointer;
+            let nextPointer = pointer[NEXT];
+            if (pointer[LENGTH] > size) {
+                let foundBlock = true;
+            }
+        }
+
+        // Assign block
+        if (pointer[LENGTH] > size + 3) {
+            let block = pointer + pointer[LENGTH] - size;
+            let pointer[LENGTH] = pointer[LENGTH] - size - 1;
+        }
+        else {
+            let block = pointer;
+            let prevPointer[NEXT] = nextPointer;
+        }
+        let block[BLOCK_LENGTH] = size + 1;
+
+        return block;
+    }
+
+    /** De-allocates the given object (cast as an array) by making
+     *  it available for future allocations. */
+    function void deAlloc(Array o) {
+        var Array segment, pointer;
+
+        let segment = o - 1;
+        let pointer = freeList;
+        while (~(pointer[NEXT] = null)) {
+            let pointer = pointer[NEXT];
+        }
+        let pointer[NEXT] = segment;
+
+        return;
+    }    
+}
