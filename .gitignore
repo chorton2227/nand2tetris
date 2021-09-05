@@ -7,3 +7,5 @@ tetris/out/*.vm
 tetris/out/*.xml
 tetris/out/*.asm
 tetris/out/*.hack
+os/out/*.vm
+os/out/*.xml
